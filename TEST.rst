@@ -1,7 +1,7 @@
 Some testing document
 =====================
 
-New Setcion
+New Section
 -----------
 
 Add a section to the document.
