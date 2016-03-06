@@ -1,4 +1,7 @@
 Some testing document
 =====================
 
-Content all here.
+New Setcion
+-----------
+
+Add a section to the document.
