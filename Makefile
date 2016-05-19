@@ -8,10 +8,10 @@ requirements:
 requirements-test: requirements
 	pip install -r requirements/test.txt
 
-flake8:
-	flake8 prlint
-
 requirements-compile:
 	pip-compile --output-file requirements/base.txt requirements/base.in
 
-.PHONY: venv requirements requirements-test requirements-compile flake8
+test:
+	$(MAKE) -C prlint
+
+.PHONY: venv requirements requirements-test requirements-compile test

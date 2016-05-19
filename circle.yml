@@ -3,5 +3,8 @@ dependencies:
     - make requirements-test
 
 test:
+  override:
+      make test
   post:
+    - cd prlint
     - make flake8
