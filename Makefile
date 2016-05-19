@@ -11,4 +11,7 @@ requirements-test: requirements
 flake8:
 	flake8 prlint
 
-.PHONY: venv requirements requirements-test flake8
+requirements-compile:
+	pip-compile --output-file requirements.txt requirements.in
+
+.PHONY: venv requirements requirements-test requirements-compile flake8
