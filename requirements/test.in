@@ -1,2 +1,4 @@
+# vim-sorted
+django-nose
 flake8
-nose
+yanc

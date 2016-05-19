@@ -1,4 +1,4 @@
-# vim-sort requirements
+# vim-sorted
 django
 djangorestframework
 pip-tools
