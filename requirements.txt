@@ -6,6 +6,8 @@
 #
 
 click==6.6                # via pip-tools
+django==1.9.6
+djangorestframework==3.3.3
 first==2.0.1              # via pip-tools
 pip-tools==1.6.5
 six==1.10.0               # via pip-tools

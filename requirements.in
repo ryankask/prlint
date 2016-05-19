@@ -1,1 +1,4 @@
+# vim-sort requirements
+django
+djangorestframework
 pip-tools
