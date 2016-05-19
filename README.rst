@@ -5,20 +5,24 @@ Clone this repository.
 
 Create a virtualenv containing Python3::
 
-    virtualenv venv --python=python3
+    make venv
 
 Activate and install requirements::
 
     . venv/bin/activate
-    pip install -r requirements.txt
+    make requirements
 
 Testing
 =======
 
 While in virtualenv, add the testing requirements::
 
-    pip install -r test-requirements.txt
+    make requirements-test
 
 Run tests with nose::
 
     nosetests
+
+Check linting with flake8::
+
+    make flake8

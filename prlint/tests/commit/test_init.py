@@ -1,6 +1,6 @@
 import unittest
 
-from nofixup.commit import Commit
+from prlint.commit import Commit
 
 
 class TestInit(unittest.TestCase):
