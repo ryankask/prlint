@@ -1,7 +1,7 @@
 import unittest
 
-from nofixup.commit import Commit
-from nofixup.exceptions import BadData
+from prlint.commit import Commit
+from prlint.exceptions import BadData
 
 
 class TestValidate(unittest.TestCase):
