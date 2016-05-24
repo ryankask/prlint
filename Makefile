@@ -2,13 +2,16 @@ venv:
 	virtualenv venv --python=python3
 
 requirements:
-	pip install -U pip
-	pip install -r requirements.txt
+	pip install --upgrade pip==8.1.1  # pip-tools can't use latest pip until 1.7
+	pip install -r requirements/base.txt
 
 requirements-test: requirements
-	pip install -r test-requirements.txt
+	pip install -r requirements/test.txt
 
-flake8:
-	flake8 prlint
+requirements-compile:
+	pip-compile --output-file requirements/base.txt requirements/base.in
 
-.PHONY: venv requirements requirements-test flake8
+test:
+	$(MAKE) -C prlint
+
+.PHONY: venv requirements requirements-test requirements-compile test

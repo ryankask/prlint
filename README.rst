@@ -19,10 +19,11 @@ While in virtualenv, add the testing requirements::
 
     make requirements-test
 
-Run tests with nose::
+Run tests with Django's test runner which is configured to use Nose::
 
-    nosetests
+    make test
 
-Check linting with flake8::
+Check linting with ``flake8``::
 
-    make flake8
+    cd prlint
+    make flake
