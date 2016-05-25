@@ -1,4 +1,5 @@
 # vim-sorted
 django
 djangorestframework
+factory_boy
 pip-tools

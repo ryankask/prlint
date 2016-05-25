@@ -1,6 +1,10 @@
+machine:
+  python:
+    version: 3.4.3
+
 dependencies:
   override:
-    - sudo make requirements-test
+    - make requirements-test
 
 test:
   override:

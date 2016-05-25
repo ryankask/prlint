@@ -10,6 +10,7 @@ requirements-test: requirements
 
 requirements-compile:
 	pip-compile --output-file requirements/base.txt requirements/base.in
+	pip-compile --output-file requirements/test.txt requirements/test.in
 
 test:
 	$(MAKE) -C prlint

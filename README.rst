@@ -1,3 +1,6 @@
+.. image:: https://circleci.com/gh/jamescooke/prlint.svg?style=svg
+    :target: https://circleci.com/gh/jamescooke/prlint
+
 Install
 =======
 
