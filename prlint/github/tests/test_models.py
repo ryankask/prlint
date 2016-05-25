@@ -27,13 +27,13 @@ class TestModels(TestCase):
 
     def test_uuid_permanent(self):
         """
-        TODO Repository model instance can not have its uuid altered
+        Repository model instance can not have its uuid altered
+
+        Trusts:
+            test_signals: A helpful message is raised.
         """
         repo = RepositoryFactory()
-        original_id = repo.uuid
         repo.uuid = uuid.uuid4()
-        repo.full_clean()
 
-        result = repo.save()
-
-        self.assertIsNone(result)
+        with self.assertRaises(ValidationError):
+            repo.save()
