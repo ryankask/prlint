@@ -1,7 +1,7 @@
+.PHONY: test lint
+
 test:
 	./manage.py test --settings=prlint.settings.test
 
-flake:
+lint:
 	flake8 prlint
-
-.PHONY: test flake
