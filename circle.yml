@@ -4,10 +4,10 @@ machine:
 
 dependencies:
   override:
-    - make requirements-test
+    - make install-test
 
 test:
   override:
     - make test
   post:
-    - cd prlint && make flake
+    - make lint

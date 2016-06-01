@@ -13,14 +13,14 @@ Create a virtualenv containing Python3::
 Activate and install requirements::
 
     . venv/bin/activate
-    make requirements
+    make install
 
 Testing
 =======
 
 While in virtualenv, add the testing requirements::
 
-    make requirements-test
+    make install-test
 
 Run tests with Django's test runner which is configured to use Nose::
 
@@ -28,5 +28,4 @@ Run tests with Django's test runner which is configured to use Nose::
 
 Check linting with ``flake8``::
 
-    cd prlint
-    make flake
+    make lint

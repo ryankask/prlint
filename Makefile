@@ -1,18 +1,20 @@
+.PHONY: venv install install-test requirements test lint
+
 venv:
 	virtualenv venv --python=python3
+	. venv/bin/activate && pip install pip==8.1.1  # Pin pip to pip-tools required version
 
-requirements:
-	pip install --upgrade pip==8.1.1  # pip-tools can't use latest pip until 1.7
+install:
 	pip install -r requirements/base.txt
 
-requirements-test: requirements
+install-test: install
 	pip install -r requirements/test.txt
 
-requirements-compile:
-	pip-compile --output-file requirements/base.txt requirements/base.in
-	pip-compile --output-file requirements/test.txt requirements/test.in
+requirements:
+	$(MAKE) -C requirements
 
 test:
 	$(MAKE) -C prlint
 
-.PHONY: venv requirements requirements-test requirements-compile test
+lint:
+	flake8 prlint/prlint
