@@ -4,11 +4,11 @@ from django.core.exceptions import ValidationError
 from django.db.models import ProtectedError
 from django.test import TestCase
 
-from ..factories import RepositoryFactory, UserFactory
-from ..models import Repository
+from ...factories import RepositoryFactory, UserFactory
+from ...models import Repository
 
 
-class TestModels(TestCase):
+class TestRepository(TestCase):
 
     def test_clean(self):
         """

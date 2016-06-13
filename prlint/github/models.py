@@ -11,15 +11,24 @@ from django.db.models import (
 )
 
 
-class Repository(Model):
+class UUIDModel(Model):
+    """
+    Provides a UUID field is locked via pre_save signal. Ensure that the model
+    is registered with `check_change_uuid` in signals.
+    """
+    class Meta:
+        abstract = True
 
+    uuid = UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+
+
+class Repository(UUIDModel):
     creator = ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=PROTECT,
-    )
-    uuid = UUIDField(
-        default=uuid.uuid4,
-        editable=False,  # Field is locked via pre_save signal
     )
 
     # Github identifiers
