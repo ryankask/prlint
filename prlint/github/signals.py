@@ -8,19 +8,20 @@ from .models import Repository
 @receiver(pre_save, sender=Repository)
 def check_change_uuid(sender, instance, **kwargs):
     """
-    Before Repository is saved, ensure that its UUID has not changed.
+    Before model that entends UUIDModel is saved, ensure that its UUID has not
+    changed.
 
     Raises:
-        ValidationError: If uuid of the Repository has been found to change.
+        ValidationError: If uuid of the model has been found to change.
     """
     try:
-        original = Repository.objects.get(pk=instance.id)
-    except Repository.DoesNotExist:
+        original = sender.objects.get(pk=instance.id)
+    except sender.DoesNotExist:
         return
 
     if instance.uuid != original.uuid:
-        message = '{repo} uuid found to have changed from {original} to {new}'.format(
-            repo=instance,
+        message = '{instance} uuid found to have changed from {original} to {new}'.format(
+            instance=instance,
             original=original.uuid,
             new=instance.uuid,
         )
