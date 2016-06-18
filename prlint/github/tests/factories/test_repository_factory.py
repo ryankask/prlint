@@ -9,11 +9,11 @@ class TestRespositoryFactory(TestCase):
 
     user_model = get_user_model()
 
-    def test_make_single(self):
+    def test_create_single(self):
         """
         RepositoryFactory can make a single instance
         """
-        RepositoryFactory()
+        result = RepositoryFactory()
 
         self.assertEqual(Repository.objects.count(), 1)
         self.assertEqual(self.user_model.objects.count(), 1)
@@ -23,7 +23,7 @@ class TestRespositoryFactory(TestCase):
         expected_end = '/{}'.format(created_repo.name)
         self.assertEndsWith(created_repo.full_name, expected_end)
 
-    def test_make_multi(self):
+    def test_create_multi(self):
         """
         RepositoryFactory can make multiple instances with default values
         """

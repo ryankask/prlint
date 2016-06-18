@@ -22,3 +22,12 @@ class RepositoryFactory(CleanModelFactory):
 
     name = LazyFunction(lambda: '_'.join(faker.words(nb=2)))
     full_name = LazyAttribute(lambda o: '{}/{}'.format(faker.word(), o.name))
+
+
+class PullRequestFactory(CleanModelFactory):
+    class Meta:
+        model = 'github.PullRequest'
+
+    repository = SubFactory(RepositoryFactory)
+
+    title = LazyFunction(lambda: ' '.join(faker.words(nb=3)))
