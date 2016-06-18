@@ -2,9 +2,10 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
-from .models import Repository
+from .models import PullRequest, Repository
 
 
+@receiver(pre_save, sender=PullRequest)
 @receiver(pre_save, sender=Repository)
 def check_change_uuid(sender, instance, **kwargs):
     """

@@ -4,10 +4,11 @@ from django.conf import settings
 from django.db.models import (
     CharField,
     ForeignKey,
+    IntegerField,
     Model,
     PROTECT,
+    TextField,
     UUIDField,
-    IntegerField,
 )
 
 
@@ -38,3 +39,12 @@ class Repository(UUIDModel):
     full_name = CharField(max_length=140)   # Full name is 'username/repo name'
 
     # TODO make better string output
+
+
+class PullRequest(UUIDModel):
+    """
+    A snapshot of a Pull Request.
+    """
+    repository = ForeignKey(Repository, on_delete=PROTECT)
+    title = TextField()  # GitHub requires a title on PRs (post trimming)
+    body = TextField(blank=True)
