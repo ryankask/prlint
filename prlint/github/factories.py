@@ -31,3 +31,14 @@ class PullRequestFactory(CleanModelFactory):
     repository = SubFactory(RepositoryFactory)
 
     title = LazyFunction(lambda: ' '.join(faker.words(nb=3)))
+
+
+class CommitFactory(CleanModelFactory):
+    class Meta:
+        model = 'github.Commit'
+
+    pull_request = SubFactory(PullRequestFactory)
+
+    message = LazyFunction(faker.text)
+    sha = LazyFunction(faker.sha1)
+    html_url = 'a'

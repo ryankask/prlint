@@ -8,7 +8,7 @@ class TestPullRequestFactory(TestCase):
 
     def test_create_single(self):
         """
-        PullRequestFactory can create single Pull Request
+        PullRequestFactory creates single Pull Request
         """
         result = PullRequestFactory()
 
@@ -20,7 +20,7 @@ class TestPullRequestFactory(TestCase):
 
     def test_create_multi(self):
         """
-        PullRequestFactory can create multiple instances with default values
+        PullRequestFactory creates multiple instances with default values
         """
         result = PullRequestFactory.create_batch(3)
 
