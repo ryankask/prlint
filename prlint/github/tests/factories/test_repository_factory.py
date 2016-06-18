@@ -6,11 +6,6 @@ from ...models import Repository
 
 
 class TestRespositoryFactory(TestCase):
-    """
-    Trusts:
-        test_user_factory: Any Repository owners will be created using the
-            rules in UserFactory which are tested by test_user_factory.
-    """
 
     user_model = get_user_model()
 
