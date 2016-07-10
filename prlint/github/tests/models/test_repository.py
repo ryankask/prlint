@@ -1,13 +1,14 @@
 import uuid
 
 from django.core.exceptions import ValidationError
+from django.db.models import ProtectedError
 from django.test import TestCase
 
-from ..factories import RepositoryFactory, UserFactory
-from ..models import Repository
+from ...factories import RepositoryFactory, UserFactory
+from ...models import Repository
 
 
-class TestModels(TestCase):
+class TestRepository(TestCase):
 
     def test_clean(self):
         """
@@ -37,3 +38,14 @@ class TestModels(TestCase):
 
         with self.assertRaises(ValidationError):
             repo.save()
+
+    def test_delete(self):
+        """
+        Repository instance will not be deleted if its owner is deleted
+
+        Protected error is raised by Django.
+        """
+        repo = RepositoryFactory()
+
+        with self.assertRaises(ProtectedError):
+            repo.creator.delete()

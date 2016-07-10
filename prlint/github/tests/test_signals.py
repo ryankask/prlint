@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from unittest.mock import Mock
 
 from ..factories import RepositoryFactory
+from ..models import Repository
 from ..signals import check_change_uuid
 
 
@@ -14,7 +15,7 @@ class TestSignals(TestCase):
         """
         repo = RepositoryFactory.build()
 
-        result = check_change_uuid(Mock(), repo)
+        result = check_change_uuid(Repository, repo)
 
         self.assertIsNone(result)
 
@@ -24,7 +25,7 @@ class TestSignals(TestCase):
         """
         repo = RepositoryFactory()
 
-        result = check_change_uuid(Mock(), repo)
+        result = check_change_uuid(Repository, repo)
 
         self.assertIsNone(result)
 
@@ -37,7 +38,7 @@ class TestSignals(TestCase):
         repo.uuid = '1234-4321'
 
         with self.assertRaises(ValidationError) as cm:
-            check_change_uuid(Mock(), repo)
+            check_change_uuid(Repository, repo)
 
         self.assertIn(str(original_id), cm.exception.message)
         self.assertIn(' 1234-4321', cm.exception.message)
