@@ -19,3 +19,16 @@ class TestCommitFactory(TestCase):
         result = CommitFactory.create_batch(3)
 
         self.assertEqual(set(Commit.objects.all()), set(result))
+
+    def test_create_url(self):
+        """
+        CommitFactory builds a URL from the repo and sha of commit
+        """
+        commit = CommitFactory(
+            sha='aaabbb1234',
+            pull_request__repository__full_name='TESTUSER/TESTREPO'
+        )
+
+        result = commit.html_url
+
+        self.assertEqual(result, 'https://github.com/TESTUSER/TESTREPO/commit/aaabbb1234')
