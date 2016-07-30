@@ -1,4 +1,4 @@
-.PHONY: venv install install-test requirements test lint isort.out
+.PHONY: venv install install-test requirements test lint
 
 venv:
 	virtualenv venv --python=python3
