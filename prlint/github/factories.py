@@ -1,12 +1,7 @@
-from factory import (
-    LazyAttribute,
-    LazyFunction,
-    SubFactory,
-)
+from factory import LazyAttribute, LazyFunction, SubFactory
 from factory.fuzzy import FuzzyInteger
 from factory_djoy import CleanModelFactory, UserFactory
 from faker.factory import Factory as FakerFactory
-
 
 faker = FakerFactory.create('en_GB')
 

@@ -1,7 +1,10 @@
+-r base.in
+
 # vim-sorted
 django-nose
 flake8
 ipdb
 ipdbplugin
 ipython
+isort
 yanc

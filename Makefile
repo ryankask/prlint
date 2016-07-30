@@ -7,7 +7,7 @@ venv:
 install:
 	pip install -r requirements/base.txt
 
-install-test: install
+install-test:
 	pip install -r requirements/test.txt
 
 requirements:
@@ -17,4 +17,6 @@ test:
 	$(MAKE) -C prlint
 
 lint:
+	isort -rc --diff prlint/ > isort.out
+	if [ "$$(wc -l isort.out)" != "1 isort.out" ]; then cat isort.out; exit 1; fi
 	flake8 prlint/prlint

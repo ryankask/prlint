@@ -2,11 +2,11 @@ import uuid
 
 from django.conf import settings
 from django.db.models import (
+    PROTECT,
     CharField,
     ForeignKey,
     IntegerField,
     Model,
-    PROTECT,
     TextField,
     UUIDField,
 )
