@@ -7,11 +7,11 @@
 click==6.6                # via pip-tools
 decorator==4.0.9          # via ipython, traitlets
 django-nose==1.4.3
-django==1.9.6
-djangorestframework==3.3.3
+django==1.9.8
+djangorestframework==3.4.1
 factory-boy==2.7.0        # via factory-djoy
-factory-djoy==0.3
-fake-factory==0.5.7       # via factory-boy
+factory-djoy==0.4
+fake-factory==0.5.9       # via factory-boy
 first==2.0.1              # via pip-tools
 flake8==2.5.4
 ipdb==0.10.0
