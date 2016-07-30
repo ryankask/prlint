@@ -1,3 +1,5 @@
+.PHONY: all check clean
+
 objects = $(wildcard *.in)
 outputs := $(objects:.in=.txt)
 PIP_TOOLS_INSTALLED: ; @which pip-compile > /dev/null
