@@ -5,24 +5,36 @@
 #    pip-compile --output-file test.txt test.in
 #
 
-backports.shutil-get-terminal-size==1.0.0  # via ipython
+click==6.6                # via pip-tools
 decorator==4.0.9          # via ipython, traitlets
 django-nose==1.4.3
+django==1.9.6
+djangorestframework==3.3.3
+factory-boy==2.7.0        # via factory-djoy
+factory-djoy==0.3
+fake-factory==0.5.7       # via factory-boy
+first==2.0.1              # via pip-tools
 flake8==2.5.4
 ipdb==0.10.0
 ipdbplugin==1.4.5
 ipython-genutils==0.1.0   # via traitlets
-ipython==4.2.0
+ipython==5.0.0
 isort==4.2.5
 mccabe==0.4.0             # via flake8
 nose==1.3.7               # via django-nose, ipdbplugin
 pep8==1.7.0               # via flake8
-pexpect==4.1.0            # via ipython
-pickleshare==0.7.2        # via ipython
+pexpect==4.2.0            # via ipython
+pickleshare==0.7.3        # via ipython
+pip-tools==1.6.5
+prompt-toolkit==1.0.3     # via ipython
 ptyprocess==0.5.1         # via pexpect
 pyflakes==1.0.0           # via flake8
+pygments==2.1.3           # via ipython
+python-dateutil==2.5.3    # via fake-factory
 simplegeneric==0.8.1      # via ipython
-traitlets==4.2.1          # via ipython
+six==1.10.0               # via fake-factory, pip-tools, prompt-toolkit, python-dateutil
+traitlets==4.2.2          # via ipython
+wcwidth==0.1.7            # via prompt-toolkit
 yanc==0.3.3
 
 # The following packages are commented out because they are
