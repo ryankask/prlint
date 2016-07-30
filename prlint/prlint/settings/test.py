@@ -1,6 +1,6 @@
 from .base import *  # NOQA
 
-INSTALLED_APPS += [
+INSTALLED_APPS += [  # NOQA
     'django_nose',
 ]
 
