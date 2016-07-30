@@ -1,6 +1,7 @@
-from django.test import TestCase
-from django.core.exceptions import ValidationError
 from unittest.mock import Mock
+
+from django.core.exceptions import ValidationError
+from django.test import TestCase
 
 from ..factories import RepositoryFactory
 from ..models import Repository
