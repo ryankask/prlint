@@ -5,3 +5,5 @@ all: $(outputs)
 
 %.txt: %.in
 	pip-compile -v --output-file $@ $<
+
+test.txt: base.txt

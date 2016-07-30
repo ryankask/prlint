@@ -7,7 +7,7 @@ venv:
 install:
 	pip install -r requirements/base.txt
 
-install-test: install
+install-test:
 	pip install -r requirements/test.txt
 
 requirements:
