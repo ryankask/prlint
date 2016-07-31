@@ -8,6 +8,6 @@ dependencies:
 
 test:
   override:
-    - make test
+    - make -C prlint/ test
   post:
-    - make lint
+    - make -C prlint/ lint

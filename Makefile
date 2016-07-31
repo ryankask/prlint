@@ -1,5 +1,10 @@
-.PHONY: venv install install-test requirements test lint
+.PHONY: all venv install install-test requirements
 
+# Update all requirements, test and lint project
+all: install-test
+	$(MAKE) -C prlint/ lint test
+
+# Bootstrap virtualenv
 venv:
 	virtualenv venv --python=python3
 	. venv/bin/activate && pip install -U pip
@@ -12,11 +17,3 @@ install-test:
 
 requirements:
 	$(MAKE) -C requirements
-
-test:
-	$(MAKE) -C prlint
-
-lint:
-	isort -rc --diff prlint/ > isort.out
-	if [ "$$(wc -l isort.out)" != "1 isort.out" ]; then cat isort.out; exit 1; fi
-	flake8 prlint/prlint
