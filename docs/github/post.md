@@ -38,10 +38,27 @@ appropriate fields will be highlighted in examples.
 
 ### Pull Request event
 
+**Condition** : If everything is OK and an Account didn't exist for this User.
+
+**Code** : `200 OK`
+
+**Content example**
 
 ## Error Responses
 
-### Ping event
+**Condition** : If Repository provided in payload does not exist in system.
+
+**Code** : `403 FORBIDDEN`
+
+**Content example** :
+
+```json
+{
+    "detail": "Repository is not registered with prlint. Please visit https://prlint.com/ to register."
+}
+```
+
+### Or
 
 **Condition** : If the set of events is not just `pull_request`.
 
@@ -49,14 +66,20 @@ appropriate fields will be highlighted in examples.
 
 **Content example** :
 
-Given that the following events were sent:
+Given that the following hook events were sent:
 
 ```json
 {
-    "events": [
-        "push",
-        "pull_request"
-    ]
+    "...",
+    "hook": {
+        "...",
+        "events": [
+            "push",
+            "pull_request"
+        ],
+        "..."
+    },
+    "..."
 }
 ```
 
@@ -64,8 +87,10 @@ Then the response will be:
 
 ```json
 {
-    "events": [
-        "This webhook endpoint only accepts `pull_request` events, plus the default `ping`. Events received were [`push`, `pull_request`]. Please reconfigure."
-    ]
+    "hook": {
+        "events": [
+            "This webhook endpoint only accepts `pull_request` events, plus the default `ping`. Events received were [`push`, `pull_request`]. Please reconfigure."
+        ]
+    }
 }
 ```

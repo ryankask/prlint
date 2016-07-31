@@ -3,5 +3,5 @@ from .views import GitHubView
 
 
 urlpatterns = [
-    url(r'^github/$', GitHubView, name='github'),
+    url(r'^github/$', GitHubView.as_view(), name='github'),
 ]
