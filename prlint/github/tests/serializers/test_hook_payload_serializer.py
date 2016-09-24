@@ -1,7 +1,7 @@
 import unittest
 
 import hypothesis.strategies as st
-from hypothesis import example, given
+from hypothesis import assume, example, given
 
 from ...serializers import HookPayloadSerializer
 
@@ -32,13 +32,14 @@ class TestHookPayloadSerializer(unittest.TestCase):
 
         self.assertTrue(result)
 
-    @given(st.lists(st.text()).filter(lambda x: x != ['pull_request']))
+    @given(st.lists(st.text()))
     @example(['*'])
     @example([])
     def test_all_fail(self, events):
         """
         HookPayloadSerializer invalid for lists of strings that are not pull_request
         """
+        assume(events != ['pull_request'])
         data = {
             'events': events,
         }
