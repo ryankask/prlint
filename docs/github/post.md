@@ -70,16 +70,16 @@ Given that the following hook events were sent:
 
 ```json
 {
-    "...",
+    "...": [],
     "hook": {
-        "...",
+        "...": [],
         "events": [
             "push",
             "pull_request"
         ],
-        "..."
+        "...": []
     },
-    "..."
+    "...": []
 }
 ```
 
@@ -87,9 +87,9 @@ Then the response will be:
 
 ```json
 {
-    "hook": {
+    "detail": {
         "events": [
-            "This webhook endpoint only accepts `pull_request` events, plus the default `ping`. Events received were [`push`, `pull_request`]. Please reconfigure."
+            "This webhook only accepts \"pull_request\" events, plus the default \"ping\". Events received were \"['push', 'pull_request']\". Please reconfigure."
         ]
     }
 }

@@ -7,7 +7,6 @@ class HookPayloadSerializer(serializers.Serializer):
 
     See https://developer.github.com/webhooks/#payloads
     """
-    # repository = RepositorySerializer(
 
     events = serializers.ListField(child=serializers.CharField(
         min_length=1,
@@ -19,4 +18,11 @@ class HookPayloadSerializer(serializers.Serializer):
         """
         if len(value) < 1:
             raise serializers.ValidationError('No events passed')
+        if value != ['pull_request']:
+            message = (
+                'This webhook only accepts "pull_request" events, plus the '
+                'default "ping". Events received were "{}". Please '
+                'reconfigure.'
+            ).format(value)
+            raise serializers.ValidationError(message)
         return value
