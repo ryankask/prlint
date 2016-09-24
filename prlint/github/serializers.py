@@ -1,5 +1,36 @@
 from rest_framework import serializers
 
+from .models import Repository
+
+
+class RepositorySerializer(serializers.Serializer):
+    """
+    Serializes the chunk of repository data from "repository" down.
+
+    TODO check on the max constraint on ID. This was done "by hand" to get
+    large numbers to work with SQLITE at test time.
+    """
+    id = serializers.IntegerField(min_value=1000, max_value=2**32)
+
+    def validate_id(self, value):
+        """
+        Repository ID is valid if it exists in the database
+        """
+        try:
+            Repository.objects.get(remote_id=value)
+        except Repository.DoesNotExist:
+            message = 'not here'
+            raise serializers.ValidationError(message)
+        return value
+
+
+class RepositoryPayloadSerializer(serializers.Serializer):
+    """
+    Serializes the repository information contained in incoming requests and
+    ensures that the source repository is registered on the system.
+    """
+    repository = RepositorySerializer()
+
 
 class HeaderSerializer(serializers.Serializer):
     """
