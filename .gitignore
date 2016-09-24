@@ -1,4 +1,5 @@
-venv
 *.pyc
-isort.out
 db.sqlite3
+isort.out
+prlint/.hypothesis
+venv

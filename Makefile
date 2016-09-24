@@ -16,4 +16,4 @@ install-test:
 	pip install -r requirements/test.txt
 
 requirements:
-	$(MAKE) -C requirements
+	$(MAKE) -C requirements all
