@@ -1,12 +1,28 @@
 # Receive GitHub webhook
 
-This endpoint receives POST requests from GitHub. Two events are handled:
-`pull_request` and `ping`. All other events will be rejected with `403
-FORBIDDEN`.
+This endpoint receives POST requests from GitHub.
 
-Data delivered will match [GitHub's payload
-specification](https://developer.github.com/webhooks/#payloads). Only the
-appropriate fields will be highlighted in examples.
+Two events are handled: `pull_request` and `ping`. The event type is indicated
+in the `X-GitHub-Event` header. Since these two request types have largely
+different endpoint conditions they have been split into two different
+documents:
+
+* `pull_request`: [Receive Pull Request event](post_pull_request.md)
+* `ping`: [Receive Ping event](post_ping.md)
+
+All other events will be rejected with `403 FORBIDDEN`.
+
+## Common constraints
+
+All request to this endpoint will be checked as follows:
+
+* Data delivered will match [GitHub's payload
+specification](https://developer.github.com/webhooks/#payloads).
+
+* Assert that the incoming pull request is from a repository that is registered
+    with the service.
+
+* Constraints of the individual webhook will then be evaluated.
 
 **URL** : `/api/github/`
 
@@ -21,34 +37,24 @@ appropriate fields will be highlighted in examples.
 * `X-GitHub-Event`: Must be included and must be one of `pull_request` or
     `ping`.
 
-**Data constraints**
+## Success Responses
+
+See individual documents for responses:
+
+* `pull_request`: [Receive Pull Request event](post_pull_request.md)
+* `ping`: [Receive Ping event](post_ping.md)
+
+## Common Error Responses
+
+Error responses are analysed in the order shown below. For example, if an
+request from an unregistered repository sends an `issue_comment` event, then
+the `401 UNAUTHORIZED` code is returned for the missing repository, rather than
+`403 FORBIDDEN` for the bad webhook event.
 
 
-**Data example** 
+**Condition** : Repository provided in payload does not exist in system.
 
-## Success Response
-
-### Ping event
-
-**Condition** : If everything is OK and an Account didn't exist for this User.
-
-**Code** : `200 OK`
-
-**Content example**
-
-### Pull Request event
-
-**Condition** : If everything is OK and an Account didn't exist for this User.
-
-**Code** : `200 OK`
-
-**Content example**
-
-## Error Responses
-
-**Condition** : If Repository provided in payload does not exist in system.
-
-**Code** : `403 FORBIDDEN`
+**Code** : `401 UNAUTHORIZED`
 
 **Content example** :
 
@@ -60,37 +66,18 @@ appropriate fields will be highlighted in examples.
 
 ### Or
 
-**Condition** : If the set of events is not just `pull_request`.
+**Condition** : If header `X-GitHub-Event` does not contain valid event.
 
-**Code** : `400 BAD REQUEST`
+**Code** : `403 FORBIDDEN`
+
+**Data example** : 
+
+    X-GitHub-Event: issues
 
 **Content example** :
 
-Given that the following hook events were sent:
-
 ```json
 {
-    "...": [],
-    "hook": {
-        "...": [],
-        "events": [
-            "push",
-            "pull_request"
-        ],
-        "...": []
-    },
-    "...": []
-}
-```
-
-Then the response will be:
-
-```json
-{
-    "detail": {
-        "events": [
-            "This webhook only accepts \"pull_request\" events, plus the default \"ping\". Events received were \"['push', 'pull_request']\". Please reconfigure."
-        ]
-    }
+    "detail": "The 'issues' event is not accepted by this webhook. Please reconfigure."
 }
 ```
