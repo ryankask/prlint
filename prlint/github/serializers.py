@@ -22,6 +22,13 @@ class HeaderSerializer(serializers.Serializer):
         """
         super().__init__(data=request.META)
 
+    @property
+    def event(self):
+        """
+        If serializer is valid, then return the valid event
+        """
+        return self.validated_data['HTTP_X_GITHUB_EVENT']
+
 
 class HookPayloadSerializer(serializers.Serializer):
     """

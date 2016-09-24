@@ -34,6 +34,7 @@ class TestHeaderSerializer(unittest.TestCase):
         result = serializer.is_valid()
 
         self.assertTrue(result)
+        self.assertEqual(serializer.event, event)
 
     @given(st.text())
     @example(' pull_request ')
@@ -48,3 +49,12 @@ class TestHeaderSerializer(unittest.TestCase):
         result = serializer.is_valid()
 
         self.assertFalse(result)
+
+    def test_invalid_event_raises(self):
+        """
+        HeaderSerializer raises AssertionError when invalid and event is loaded
+        """
+        serializer = HeaderSerializer(self.request)
+
+        with self.assertRaises(AssertionError):
+            serializer.event
