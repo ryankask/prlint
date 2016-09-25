@@ -56,11 +56,27 @@ the `401 UNAUTHORIZED` code is returned for the missing repository, rather than
 
 **Code** : `401 UNAUTHORIZED`
 
+**Data example** :
+
+```json
+{
+    "...": [],
+    "repository": {
+        "id": 987654321,
+        "...": []
+    },
+    "...": []
+```
+
 **Content example** :
 
 ```json
 {
-    "detail": "Repository is not registered with prlint. Please visit https://prlint.com/ to register."
+    "repository": {
+        "id": [
+            "Repository with id \"987654321\" is not registered with prlint."
+        ]
+    }
 }
 ```
 
@@ -70,7 +86,7 @@ the `401 UNAUTHORIZED` code is returned for the missing repository, rather than
 
 **Code** : `403 FORBIDDEN`
 
-**Data example** : 
+**Data example** :
 
     X-GitHub-Event: issues
 

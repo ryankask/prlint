@@ -55,6 +55,8 @@ class TestRepositoryPayloadSerializer(TestCase):
 
         self.assertFalse(result)
         self.assertIn('repository', serializer.errors)
+        message = serializer.errors['repository']['id'][0]
+        self.assertIn('id "4321" is not registered with prlint', message)
 
 
 class TestRepositorySerializer(TestCase):
@@ -134,7 +136,7 @@ class TestRepositorySerializer(TestCase):
         result = serializer.is_valid()
 
         self.assertFalse(result)
-        self.assertIn('not here', str(serializer.errors))
+        self.assertIn('id "{}" is not registered'.format(repo_id), str(serializer.errors))
 
     @given(st.dictionaries(st.characters(), st.text()))
     def test_invalid_no_id(self, data):

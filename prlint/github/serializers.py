@@ -19,7 +19,7 @@ class RepositorySerializer(serializers.Serializer):
         try:
             Repository.objects.get(remote_id=value)
         except Repository.DoesNotExist:
-            message = 'not here'
+            message = 'Repository with id "{}" is not registered with prlint.'.format(value)
             raise serializers.ValidationError(message)
         return value
 
