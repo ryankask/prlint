@@ -7,6 +7,16 @@ from faker.factory import Factory as FakerFactory
 faker = FakerFactory.create('en_GB')
 
 
+def PayloadRequestFactory():
+    """
+    Build a Request, configure it to look like a webhook payload from GitHub.
+    """
+    request_factory = RequestFactory()
+    request = request_factory.post('/')
+    request.META['HTTP_X_GITHUB_EVENT'] = 'pull_request'
+    return request
+
+
 class PingPayloadFactory(Factory):
     """
     Args:
