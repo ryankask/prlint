@@ -1,5 +1,5 @@
-from django.test import RequestFactory
-from factory import Dict, Factory, LazyFunction, SelfAttribute
+from django.core.urlresolvers import reverse
+from factory import Factory, LazyFunction, SelfAttribute, SubFactory, LazyAttribute
 from factory.fuzzy import FuzzyInteger
 from faker.factory import Factory as FakerFactory
 
@@ -15,6 +15,31 @@ def PayloadRequestFactory():
     request = request_factory.post('/')
     request.META['HTTP_X_GITHUB_EVENT'] = 'pull_request'
     return request
+
+
+class HookConfigPayloadFactory(Factory):
+    """
+    Generates config block of GitHub's configuration for Hook payloads. Will
+    attempt to build a fully qualified URL if a request is passed.
+    """
+    class Meta:
+        model = dict
+
+    class Params:
+        hook_url = '/__HOOK_URL__/'
+        request = None
+
+    content_type = 'json'
+    insecure_ssl = '0'
+    url = LazyAttribute(lambda o: (
+        'http://noserver{}'.format(o.hook_url)
+        if o.request is None else
+        o.request.build_absolute_uri(o.hook_url)
+    ))
+
+
+class HookPayloadFactory(Factory):
+    pass
 
 
 class PingPayloadFactory(Factory):
