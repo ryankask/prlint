@@ -39,7 +39,45 @@ class HookConfigPayloadFactory(Factory):
 
 
 class HookPayloadFactory(Factory):
-    pass
+    """
+    Args:
+        hook_url (str, optional): URL of the webhook that would receive this
+            built payload.
+        request (django HttpRequest, optional): Optional request, can be
+            provided if full URIs are required.
+
+    Fields to add to this factory:
+
+        * 'last_response': {
+        * 'type': 'Repository',
+        * 'code': None,
+        * 'status': 'unused',
+        * 'message': None,
+    """
+    class Meta:
+        model = dict
+
+    class Params:
+        hook_url = '/__HOOK_URL__/'
+        request = None
+
+    id = 1
+    name = 'web'
+    active = True
+    events = ['pull_request']
+    config = SubFactory(
+        HookConfigPayloadFactory,
+        hook_url=SelfAttribute('..hook_url'),
+        request=SelfAttribute('..request'),
+    )
+    updated_at = '2016-07-31T13:32:47Z'
+    created_at = '2016-07-31T13:32:47Z'
+
+    # TODO Generate these from a Respository and / or Webhook instance
+    url = 'https://api.github.com/repos/jamescooke/prlint/hooks/9328799'
+    test_url = 'https://api.github.com/repos/jamescooke/prlint/hooks/9328799/test'
+    ping_url = 'https://api.github.com/repos/jamescooke/prlint/hooks/9328799/pings'
+    # end
 
 
 class PingPayloadFactory(Factory):
@@ -61,29 +99,7 @@ class PingPayloadFactory(Factory):
 
     zen = LazyFunction(lambda: ' '.join(faker.words(nb=5)))
     hook_id = FuzzyInteger(low=1000, high=999999)
-    hook = Dict({
-        'type': 'Repository',
-        'id': SelfAttribute('..hook_id'),
-        'name': 'web',
-        'active': True,
-        'events': SelfAttribute('..hook_events'),
-        'config': {
-            'content_type': 'json',
-            'insecure_ssl': '0',
-            'url': 'http://testserver/api/github/',
-        },
-        'updated_at': '2016-07-31T13:32:47Z',
-        'created_at': '2016-07-31T13:32:47Z',
-
-        # TODO Generate these from a Respository and / or Webhook instance
-        'url': 'https://api.github.com/repos/jamescooke/prlint/hooks/9328799',
-        'test_url': 'https://api.github.com/repos/jamescooke/prlint/hooks/9328799/test',
-        'ping_url': 'https://api.github.com/repos/jamescooke/prlint/hooks/9328799/pings',
-        # end
-
-        'last_response': {
-            'code': None,
-            'status': 'unused',
-            'message': None,
-        },
-    })
+    hook = SubFactory(
+        HookPayloadFactory,
+        events=SelfAttribute('..hook_events'),
+    )
