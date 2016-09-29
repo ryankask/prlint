@@ -3,7 +3,7 @@ from django.test import TestCase
 from ..payload_factories import PingPayloadFactory
 
 
-class TestWebhookPayloadFactory(TestCase):
+class TestPingPayloadFactory(TestCase):
 
     def test_happy(self):
         """
