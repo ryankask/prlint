@@ -2,18 +2,38 @@ from django.core.urlresolvers import reverse
 from factory import Factory, LazyFunction, SelfAttribute, SubFactory, LazyAttribute
 from factory.fuzzy import FuzzyInteger
 from faker.factory import Factory as FakerFactory
+from rest_framework.test import APIRequestFactory
 
 
 faker = FakerFactory.create('en_GB')
 
 
-def PayloadRequestFactory():
+default_url = reverse('api:github')
+
+
+def PayloadRequestFactory(hook_url=None):
     """
     Build a Request, configure it to look like a webhook payload from GitHub.
+    Request built is always `post`, but the URL used can change - this is so
+    that test URLs can be provided.
+
+    Args:
+        hook_url (str, optional): URL of the built request. Defaults to the
+            GitHub webhook URL.
     """
-    request_factory = RequestFactory()
-    request = request_factory.post('/')
-    request.META['HTTP_X_GITHUB_EVENT'] = 'pull_request'
+    if hook_url is None:
+        hook_url = default_url
+
+    request_factory = APIRequestFactory()
+    request = request_factory.post(
+        hook_url,
+        data=PingPayloadFactory(
+            hook_url=hook_url,
+            request=request_factory.get('/'),
+        ),
+        format='json',
+    )
+    request.META['HTTP_X_GITHUB_EVENT'] = 'ping'
     return request
 
 
