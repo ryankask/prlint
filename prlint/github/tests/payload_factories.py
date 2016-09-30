@@ -21,6 +21,8 @@ class HookConfigPayloadFactory(Factory):
     """
     Generates config block of GitHub's configuration for Hook payloads. Will
     attempt to build a fully qualified URL if a request is passed.
+
+    Probably should not be called standalone - see HookPayloadFactory for Args.
     """
     class Meta:
         model = dict
@@ -83,23 +85,30 @@ class HookPayloadFactory(Factory):
 class PingPayloadFactory(Factory):
     """
     Args:
-        zen (str, optional): Random string of GitHub zen. Defaults to random
-            words.
-        hook_id (int, optional): ID of hook. Defaults to random int.
-
         hook_events (list (str), optional): List of events that hook has been
             configured for. Used to populate 'hook' dict. Defaults to
             `['pull_request']`.
+        hook_id (int, optional): ID of hook. Defaults to random int.
+        hook_url (str, optional): URL of the webhook that would receive this
+            built payload.
+        request (django HttpRequest, optional): Optional request, can be
+            provided if full URIs are required.
+        zen (str, optional): Random string of GitHub zen. Defaults to random
+            words.
     """
     class Meta:
         model = dict
 
     class Params:
         hook_events = ['pull_request']
+        hook_url = '/__HOOK_URL__/'
+        request = None
 
     zen = LazyFunction(lambda: ' '.join(faker.words(nb=5)))
     hook_id = FuzzyInteger(low=1000, high=999999)
     hook = SubFactory(
         HookPayloadFactory,
         events=SelfAttribute('..hook_events'),
+        hook_url=SelfAttribute('..hook_url'),
+        request=SelfAttribute('..request'),
     )

@@ -1,11 +1,13 @@
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 
 from ..payload_factories import PingPayloadFactory
 
 
 class TestPingPayloadFactory(TestCase):
 
-    def test_happy(self):
+    request_factory = RequestFactory()
+
+    def test_default(self):
         """
         PingPayloadFactory creates a default payload
         """
@@ -17,6 +19,7 @@ class TestPingPayloadFactory(TestCase):
         self.assertGreater(result['hook_id'], 0)
         self.assertEqual(result['hook']['events'], ['pull_request'])
         # self.assertGreater(result['repository']['id'], 999)
+        self.assertEqual(result['hook']['config']['url'], 'http://noserver/__HOOK_URL__/')
 
     def test_custom(self):
         """
@@ -27,3 +30,31 @@ class TestPingPayloadFactory(TestCase):
         )
 
         self.assertEqual(result['hook']['events'], ['a', 'b', 'c'])
+
+    def test_request(self):
+        """
+        PingPayloadFactory generates full URI when request is provided
+        """
+        request = self.request_factory.get('/')
+
+        result = PingPayloadFactory(request=request)
+
+        self.assertEqual(result['hook']['config']['url'], 'http://testserver/__HOOK_URL__/')
+
+    def test_url(self):
+        """
+        PingPayloadFactory generates custom URLs
+        """
+        result = PingPayloadFactory(hook_url='/github/')
+
+        self.assertEqual(result['hook']['config']['url'], 'http://noserver/github/')
+
+    def test_request_url(self):
+        """
+        PingPayloadFactory generates full URI with url and request
+        """
+        request = self.request_factory.get('/')
+
+        result = PingPayloadFactory(hook_url='/github/', request=request)
+
+        self.assertEqual(result['hook']['config']['url'], 'http://testserver/github/')
