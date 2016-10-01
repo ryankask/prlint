@@ -2,6 +2,7 @@ import unittest
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from ..payload_factories import PayloadRequestFactory
 
@@ -17,15 +18,7 @@ def view(request):
     })
 
 
-class TestURL(unittest.TestCase):
-
-    def test_default(self):
-        """
-        PayloadRequestFactory sets github webhook URL by default
-        """
-        result = PayloadRequestFactory()
-
-        self.assertEqual(result.get_full_path(), '/api/github/')
+class TestPayloadRequestFactory(unittest.TestCase):
 
     def test_default_data(self):
         """
@@ -37,4 +30,15 @@ class TestURL(unittest.TestCase):
 
         expected_url = 'http://testserver/api/github/'
         self.assertEqual(result.data['request_data']['hook']['config']['url'], expected_url)
+        self.assertGreater(result.data['request_data']['repository']['id'], 1000)
         self.assertEqual(result.data['header_github_event'], 'ping')
+
+    def test_repository_id(self):
+        """
+        PayloadRequestFactory passes respository ID through to repo payload fac
+        """
+        request = PayloadRequestFactory(repository_id=999)
+
+        result = view(request)
+
+        self.assertEqual(result.data['request_data']['repository']['id'], 999)

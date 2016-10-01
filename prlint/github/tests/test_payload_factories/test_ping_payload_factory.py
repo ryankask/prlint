@@ -1,6 +1,9 @@
+import unittest
+
 from django.test import RequestFactory, TestCase
 
 from ..payload_factories import PingPayloadFactory
+from ...serializers import RepositoryPayloadSerializer
 
 
 class TestPingPayloadFactory(TestCase):
@@ -18,8 +21,8 @@ class TestPingPayloadFactory(TestCase):
         self.assertIsInstance(result['hook_id'], int)
         self.assertGreater(result['hook_id'], 0)
         self.assertEqual(result['hook']['events'], ['pull_request'])
-        # self.assertGreater(result['repository']['id'], 999)
         self.assertEqual(result['hook']['config']['url'], 'http://noserver/__HOOK_URL__/')
+        self.assertGreater(result['repository']['id'], 1000)
 
     def test_custom(self):
         """
@@ -58,3 +61,17 @@ class TestPingPayloadFactory(TestCase):
         result = PingPayloadFactory(hook_url='/github/', request=request)
 
         self.assertEqual(result['hook']['config']['url'], 'http://testserver/github/')
+
+    def test_custom_repo(self):
+        """
+        PingPayloadFactory passes repository ID through to repo factory
+        """
+        result = PingPayloadFactory(repository_id=999)
+
+        self.assertEqual(result['repository']['id'], 999)
+
+    @unittest.skip('do once there is a repository payload serializer wired in')
+    def test_serializable(self):
+        """
+        PingPayloadFactory generates valid payload in RepositoryPayloadSerializer
+        """
