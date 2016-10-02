@@ -2,9 +2,10 @@ import unittest
 
 import hypothesis.strategies as st
 from django.test import RequestFactory
-from hypothesis import assume, given, example
+from hypothesis import assume, example, given
 
 from ...serializers import HeaderSerializer
+from ..payload_factories import PayloadRequestFactory
 
 
 class TestHeaderSerializer(unittest.TestCase):
@@ -58,3 +59,14 @@ class TestHeaderSerializer(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             serializer.event
+
+    def test_ping_factory_serializable(self):
+        """
+        HeaderSerializer is valid with default PingPayloadRequestFactory
+        """
+        request = PayloadRequestFactory()
+        serializer = HeaderSerializer(request)
+
+        result = serializer.is_valid()
+
+        self.assertTrue(result, serializer.errors)

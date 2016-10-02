@@ -5,6 +5,7 @@ from hypothesis.extra.django import TestCase
 from ...factories import RepositoryFactory
 from ...models import Repository
 from ...serializers import RepositoryPayloadSerializer, RepositorySerializer
+from ..payload_factories import PingPayloadFactory
 
 
 class TestRepositoryPayloadSerializer(TestCase):
@@ -57,6 +58,18 @@ class TestRepositoryPayloadSerializer(TestCase):
         self.assertIn('repository', serializer.errors)
         message = serializer.errors['repository']['id'][0]
         self.assertIn('id "4321" is not registered with prlint', message)
+
+    def test_ping_factory_serializable(self):
+        """
+        RepositoryPayloadSerializer is valid with default PingPayloadFactory
+        """
+        repo = RepositoryFactory()
+        data = PingPayloadFactory(repository_id=repo.remote_id)
+        serializer = RepositoryPayloadSerializer(data=data)
+
+        result = serializer.is_valid()
+
+        self.assertTrue(result, serializer.errors)
 
 
 class TestRepositorySerializer(TestCase):

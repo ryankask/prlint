@@ -1,12 +1,13 @@
-import unittest
-
 import hypothesis.strategies as st
 from hypothesis import assume, example, given
+from hypothesis.extra.django import TestCase
 
+from ...factories import RepositoryFactory
 from ...serializers import HookPayloadSerializer
+from ..payload_factories import PingPayloadFactory
 
 
-class TestHookPayloadSerializer(unittest.TestCase):
+class TestHookPayloadSerializer(TestCase):
 
     def test_empty(self):
         """
@@ -48,3 +49,15 @@ class TestHookPayloadSerializer(unittest.TestCase):
         result = serializer.is_valid()
 
         self.assertFalse(result)
+
+    def test_ping_factory_serializable(self):
+        """
+        HookPayloadSerializer is valid with default PingPayloadFactory
+        """
+        repo = RepositoryFactory()
+        data = PingPayloadFactory(repository_id=repo.remote_id)
+        serializer = HookPayloadSerializer(data=data['hook'])
+
+        result = serializer.is_valid()
+
+        self.assertTrue(result, serializer.errors)

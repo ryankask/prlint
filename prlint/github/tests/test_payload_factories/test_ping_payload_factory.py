@@ -1,5 +1,3 @@
-import unittest
-
 from django.test import RequestFactory, TestCase
 
 from ..payload_factories import PingPayloadFactory
@@ -69,9 +67,3 @@ class TestPingPayloadFactory(TestCase):
         result = PingPayloadFactory(repository_id=999)
 
         self.assertEqual(result['repository']['id'], 999)
-
-    @unittest.skip('do once there is a repository payload serializer wired in')
-    def test_serializable(self):
-        """
-        PingPayloadFactory generates valid payload in RepositoryPayloadSerializer
-        """
