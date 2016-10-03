@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from django.test import TestCase
+from factory_djoy import UserFactory
 
 from ...factories import RepositoryFactory
 from ...models import Repository
@@ -22,6 +24,15 @@ class TestRespositoryFactory(TestCase):
         self.assertGreater(1000000, created_repo.remote_id)
         expected_end = '/{}'.format(created_repo.name)
         self.assertEndsWith(created_repo.full_name, expected_end)
+
+    def test_create_single_existing(self):
+        """
+        RepositoryFactory fails if user already exists
+        """
+        UserFactory(username='user1')
+
+        with self.assertRaises(IntegrityError):
+            RepositoryFactory(creator__username='user1')
 
     def test_create_multi(self):
         """

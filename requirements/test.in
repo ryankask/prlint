@@ -3,6 +3,7 @@
 # vim-sorted
 django-nose
 flake8
+hypothesis
 ipdb
 ipdbplugin
 ipython
