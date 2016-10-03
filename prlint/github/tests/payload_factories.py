@@ -31,18 +31,25 @@ def PayloadRequestFactory(header__event='ping', hook_url=None, repository_id=Non
             `X-GitHub-Event` header. Defaults to 'ping'.
         hook_url (str, optional): URL of the built request. Defaults to the
             GitHub webhook URL.
+        hook_events (list(str), optional): List of events that GitHub has been
+            configured to send to this webhook.
     """
     if hook_url is None:
         hook_url = default_url
 
     request_factory = APIRequestFactory()
+
+    ping_payload_kwargs = {
+        'hook_url': hook_url,
+        'request': request_factory.get('/'),
+        'repository_id': repository_id,
+    }
+    if hook_events is not None:
+        ping_payload_kwargs['hook_events'] = hook_events
+
     request = request_factory.post(
         hook_url,
-        data=PingPayloadFactory(
-            hook_url=hook_url,
-            request=request_factory.get('/'),
-            repository_id=repository_id,
-        ),
+        data=PingPayloadFactory(**ping_payload_kwargs),
         format='json',
     )
     request.META['HTTP_X_GITHUB_EVENT'] = header__event

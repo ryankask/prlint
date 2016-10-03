@@ -52,3 +52,13 @@ class TestPayloadRequestFactory(unittest.TestCase):
         result = view(request)
 
         self.assertEqual(result.data['header_github_event'], 'commit')
+
+    def test_hook_events(self):
+        """
+        PayloadRequestFactory sets hook events from kwarg
+        """
+        request = PayloadRequestFactory(hook_events=['*'])
+
+        result = view(request)
+
+        self.assertEqual(result.data['request_data']['hook']['events'], ['*'])
