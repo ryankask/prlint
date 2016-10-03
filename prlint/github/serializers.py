@@ -86,3 +86,10 @@ class HookPayloadSerializer(serializers.Serializer):
             ).format(value)
             raise serializers.ValidationError(message)
         return value
+
+
+class PingPayloadSerializer(serializers.Serializer):
+    """
+    Validate ping payload from GitHub
+    """
+    hook = HookPayloadSerializer()
