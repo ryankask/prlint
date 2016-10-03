@@ -66,6 +66,7 @@ the `401 UNAUTHORIZED` code is returned for the missing repository, rather than
         "...": []
     },
     "...": []
+}
 ```
 
 **Content example** :
