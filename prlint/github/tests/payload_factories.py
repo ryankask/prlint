@@ -20,13 +20,15 @@ faker = FakerFactory.create('en_GB')
 default_url = reverse('api:github')
 
 
-def PayloadRequestFactory(hook_url=None, repository_id=None):
+def PayloadRequestFactory(header__event='ping', hook_url=None, repository_id=None, hook_events=None):
     """
     Build a Request, configure it to look like a webhook payload from GitHub.
     Request built is always `post`, but the URL used can change - this is so
     that test URLs can be provided.
 
     Args:
+        header__event (str, optional): Name of the event to be sent as the
+            `X-GitHub-Event` header. Defaults to 'ping'.
         hook_url (str, optional): URL of the built request. Defaults to the
             GitHub webhook URL.
     """
@@ -43,7 +45,7 @@ def PayloadRequestFactory(hook_url=None, repository_id=None):
         ),
         format='json',
     )
-    request.META['HTTP_X_GITHUB_EVENT'] = 'ping'
+    request.META['HTTP_X_GITHUB_EVENT'] = header__event
     return request
 
 
