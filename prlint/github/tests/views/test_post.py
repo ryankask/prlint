@@ -21,6 +21,14 @@ class TestPostCommon(TestPost):
         """
         self.assertEqual(self.url, '/api/github/')
 
+    def test_non_json(self):
+        """
+        GitHub endpoint rejects non-json requests
+        """
+        result = self.client.post(self.url, {}, content_type='application/xml')
+
+        self.assertEqual(result.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
 
 class TestPostUnregistered(TestPost):
 
