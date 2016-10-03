@@ -1,7 +1,7 @@
 from django.test import RequestFactory, TestCase
 
-from ..payload_factories import PingPayloadFactory
 from ...serializers import RepositoryPayloadSerializer
+from ..payload_factories import PingPayloadFactory
 
 
 class TestPingPayloadFactory(TestCase):

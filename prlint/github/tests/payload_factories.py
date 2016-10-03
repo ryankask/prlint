@@ -13,7 +13,6 @@ from factory.fuzzy import FuzzyInteger
 from faker.factory import Factory as FakerFactory
 from rest_framework.test import APIRequestFactory
 
-
 faker = FakerFactory.create('en_GB')
 
 
