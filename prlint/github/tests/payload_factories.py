@@ -19,11 +19,26 @@ faker = FakerFactory.create('en_GB')
 default_url = reverse('api:github')
 
 
+def PingEventFactory():
+    return PayloadRequestFactory(header__event='ping')
+
+
 def PayloadRequestFactory(header__event='ping', hook_url=None, repository_id=None, hook_events=None):
     """
-    Build a Request, configure it to look like a webhook payload from GitHub.
-    Request built is always `post`, but the URL used can change - this is so
-    that test URLs can be provided.
+    Build a Request and configure it to look like a webhook payload from
+    GitHub. The Request instance built is always the ``POST`` method, but the
+    URL used can change - this is so that test URLs can be provided.
+
+    It is possible to create a Request that would never be sent by GitHub in a
+    number of ways. These conditions are not checked by the factory to ensure
+    that only valid Requests are constructed. Some examples:
+
+    - Pass a hook configuration which contains a limited number of events and
+      then issue a non-ping event that is not in that list. For example::
+
+          PayloadRequestFactory(header__event='pull_request', hook_events=['commit'])
+
+    - Pass a ``repository_id`` that is negative or stringy.
 
     Args:
         header__event (str, optional): Name of the event to be sent as the
@@ -162,6 +177,8 @@ class RepositoryPayloadFactory(Factory):
 
 class PingPayloadFactory(Factory):
     """
+    Generates Ping payload data for a Ping webhook request.
+
     Args:
         hook_events (list (str), optional): List of events that hook has been
             configured for. Used to populate 'hook' dict. Defaults to
