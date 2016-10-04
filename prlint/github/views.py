@@ -37,7 +37,15 @@ class GitHubView(APIView):
         try:
             header_serializer.is_valid(raise_exception=True)
         except ValidationError:
-            return Response(header_serializer.errors, status=status.HTTP_403_FORBIDDEN)
+            # Event passed is invalid. Morph serializer error into something
+            # more understandable.
+            message = {
+                'detail': (
+                    'The \'{}\' event is not accepted by this webhook. Please '
+                    'reconfigure.'.format(header_serializer.data['HTTP_X_GITHUB_EVENT'])
+                ),
+            }
+            return Response(message, status=status.HTTP_403_FORBIDDEN)
 
         ping_serializer = PingPayloadSerializer(data=request.data)
         try:

@@ -69,6 +69,12 @@ class TestPostRegistered(TestPost):
         result = GitHubView.as_view()(request)
 
         self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(list(result.data), ['detail'])
+        {
+            "detail": "The 'issues' event is not accepted by this webhook. Please reconfigure.",
+        }
+        self.assertIn('\'commit\' event', result.data['detail'])
+        self.assertIn('Please reconfigure.', result.data['detail'])
 
     # PING
 
