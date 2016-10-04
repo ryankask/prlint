@@ -27,36 +27,16 @@ class TestPingPayloadFactory(TestCase):
         PingPayloadFactory can generate custom events
         """
         result = PingPayloadFactory(
-            hook_events=['a', 'b', 'c']
+            hook__events=['a', 'b', 'c']
         )
 
         self.assertEqual(result['hook']['events'], ['a', 'b', 'c'])
-
-    def test_request(self):
-        """
-        PingPayloadFactory generates full URI when request is provided
-        """
-        request = self.request_factory.get('/')
-
-        result = PingPayloadFactory(request=request)
-
-        self.assertEqual(result['hook']['config']['url'], 'http://testserver/__HOOK_URL__/')
 
     def test_url(self):
         """
         PingPayloadFactory generates custom URLs
         """
-        result = PingPayloadFactory(hook_url='/github/')
-
-        self.assertEqual(result['hook']['config']['url'], 'http://noserver/github/')
-
-    def test_request_url(self):
-        """
-        PingPayloadFactory generates full URI with url and request
-        """
-        request = self.request_factory.get('/')
-
-        result = PingPayloadFactory(hook_url='/github/', request=request)
+        result = PingPayloadFactory(hook__config__url='http://testserver/github/')
 
         self.assertEqual(result['hook']['config']['url'], 'http://testserver/github/')
 
@@ -64,6 +44,6 @@ class TestPingPayloadFactory(TestCase):
         """
         PingPayloadFactory passes repository ID through to repo factory
         """
-        result = PingPayloadFactory(repository_id=999)
+        result = PingPayloadFactory(repository__id=999)
 
         self.assertEqual(result['repository']['id'], 999)

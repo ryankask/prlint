@@ -1,37 +1,23 @@
-from django.test import RequestFactory, TestCase
+import unittest
 
 from ..payload_factories import HookPayloadFactory
 
 
-class TestHookPayloadFactory(TestCase):
-
-    request_factory = RequestFactory()
+class TestHookPayloadFactory(unittest.TestCase):
 
     def test_default(self):
         """
-        HookPayloadFactory generates default payload without request
+        HookPayloadFactory generates default payload
         """
         result = HookPayloadFactory()
 
         self.assertEqual(result['config']['url'], 'http://noserver/__HOOK_URL__/')
         self.assertEqual(result['events'], ['pull_request'])
 
-    def test_request(self):
-        """
-        HookPayloadFactory generates full URI when request is provided
-        """
-        request = self.request_factory.get('/')
-
-        result = HookPayloadFactory(request=request)
-
-        self.assertEqual(result['config']['url'], 'http://testserver/__HOOK_URL__/')
-
     def test_request_hook_url(self):
         """
-        HookPayloadFactory uses request and hook_url to generate full URI
+        HookPayloadFactory passes config URL through to subfactory
         """
-        request = self.request_factory.get('/')
+        result = HookPayloadFactory(config__url='__URL__')
 
-        result = HookPayloadFactory(request=request, hook_url='/github/')
-
-        self.assertEqual(result['config']['url'], 'http://testserver/github/')
+        self.assertEqual(result['config']['url'], '__URL__')
