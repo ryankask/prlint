@@ -16,7 +16,7 @@ from rest_framework.test import APIRequestFactory
 faker = FakerFactory.create('en_GB')
 
 
-def PingEventFactory():
+def PingEventFactory(data__hook__events=None):
     """
     Args:
         header__event (str, optional): Name of the event to be sent as the
@@ -26,6 +26,7 @@ def PingEventFactory():
         hook_events (list(str), optional): List of events that GitHub has been
             configured to send to this webhook.
     """
+
     return PayloadRequestFactory(event='ping', data={})
     ping_payload_kwargs = {
         'hook_url': hook_url,

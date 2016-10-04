@@ -60,11 +60,12 @@ class TestHeaderSerializer(unittest.TestCase):
         with self.assertRaises(AssertionError):
             serializer.event
 
-    def test_ping_factory_serializable(self):
+    @given(st.sampled_from(('ping', 'pull_request')))
+    def test_request_factory_serializable(self, event):
         """
-        HeaderSerializer is valid with default PingPayloadRequestFactory
+        HeaderSerializer is valid for Requests built by PayloadRequestFactory
         """
-        request = PayloadRequestFactory()
+        request = PayloadRequestFactory({}, event)
         serializer = HeaderSerializer(request)
 
         result = serializer.is_valid()

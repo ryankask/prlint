@@ -32,7 +32,7 @@ class TestPostCommon(TestPost):
 
 class TestPostUnregistered(TestPost):
 
-    def test_no_repo(self):
+    def test_ping_no_repo(self):
         """
         GitHub webhook returns 401 UNAUTH when no matching Repository in DB
         """
