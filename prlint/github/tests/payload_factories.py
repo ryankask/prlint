@@ -16,30 +16,8 @@ from rest_framework.test import APIRequestFactory
 faker = FakerFactory.create('en_GB')
 
 
-default_url = reverse('api:github')
-
-
 def PingEventFactory():
-    return PayloadRequestFactory(header__event='ping')
-
-
-def PayloadRequestFactory(header__event='ping', hook_url=None, repository_id=None, hook_events=None):
     """
-    Build a Request and configure it to look like a webhook payload from
-    GitHub. The Request instance built is always the ``POST`` method, but the
-    URL used can change - this is so that test URLs can be provided.
-
-    It is possible to create a Request that would never be sent by GitHub in a
-    number of ways. These conditions are not checked by the factory to ensure
-    that only valid Requests are constructed. Some examples:
-
-    - Pass a hook configuration which contains a limited number of events and
-      then issue a non-ping event that is not in that list. For example::
-
-          PayloadRequestFactory(header__event='pull_request', hook_events=['commit'])
-
-    - Pass a ``repository_id`` that is negative or stringy.
-
     Args:
         header__event (str, optional): Name of the event to be sent as the
             `X-GitHub-Event` header. Defaults to 'ping'.
@@ -48,11 +26,7 @@ def PayloadRequestFactory(header__event='ping', hook_url=None, repository_id=Non
         hook_events (list(str), optional): List of events that GitHub has been
             configured to send to this webhook.
     """
-    if hook_url is None:
-        hook_url = default_url
-
-    request_factory = APIRequestFactory()
-
+    return PayloadRequestFactory(event='ping', data={})
     ping_payload_kwargs = {
         'hook_url': hook_url,
         'request': request_factory.get('/'),
@@ -60,13 +34,30 @@ def PayloadRequestFactory(header__event='ping', hook_url=None, repository_id=Non
     }
     if hook_events is not None:
         ping_payload_kwargs['hook_events'] = hook_events
+    PingPayloadFactory(**ping_payload_kwargs),
 
-    request = request_factory.post(
-        hook_url,
-        data=PingPayloadFactory(**ping_payload_kwargs),
-        format='json',
-    )
-    request.META['HTTP_X_GITHUB_EVENT'] = header__event
+
+def PayloadRequestFactory(data, event, url=None):
+    """
+    Accept a chunk of data and a required event name and stuff them into a
+    Request object which will look like it originated from GitHub. The Request
+    instance built is always the ``POST`` method, but the URL used can change -
+    this is so that test URLs can be provided.
+
+    Args:
+        data (dict): Data to be POSTed in the Request.
+        event (str): Name of the event to be sent as the `X-GitHub-Event`
+            header.
+        url (str, optional): URL of the built request. Defaults to the GitHub
+            webhook URL.
+    """
+    if url is None:
+        url = reverse('api:github')
+
+    request_factory = APIRequestFactory()
+    request = request_factory.post(url, data=data, format='json')
+    request.META['HTTP_X_GITHUB_EVENT'] = event
+
     return request
 
 
