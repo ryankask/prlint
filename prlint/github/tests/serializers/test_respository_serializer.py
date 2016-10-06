@@ -64,7 +64,7 @@ class TestRepositoryPayloadSerializer(TestCase):
         RepositoryPayloadSerializer is valid with default PingPayloadFactory
         """
         repo = RepositoryFactory()
-        data = PingPayloadFactory(repository_id=repo.remote_id)
+        data = PingPayloadFactory(repository__id=repo.remote_id)
         serializer = RepositoryPayloadSerializer(data=data)
 
         result = serializer.is_valid()

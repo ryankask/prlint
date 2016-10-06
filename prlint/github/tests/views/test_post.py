@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 from ...factories import RepositoryFactory
 from ...models import Repository
 from ...views import GitHubView
-from ..payload_factories import PayloadRequestFactory
+from ..payload_factories import PayloadRequestFactory, PingEventFactory
 
 
 class TestPost(APITestCase):
@@ -34,9 +34,9 @@ class TestPostUnregistered(TestPost):
 
     def test_ping_no_repo(self):
         """
-        GitHub webhook returns 401 UNAUTH when no matching Repository in DB
+        GitHub Ping webhook returns 401 UNAUTH when no matching Repository
         """
-        request = PayloadRequestFactory()
+        request = PingEventFactory()
 
         result = GitHubView.as_view()(request)
 
@@ -62,8 +62,12 @@ class TestPostRegistered(TestPost):
         GitHub webhook rejects commit event with 403 forbidden response
         """
         request = PayloadRequestFactory(
-            header__event='commit',
-            repository_id=123456,
+            data={
+                'repository': {
+                    'id': 123456,
+                },
+            },
+            event='commit',
         )
 
         result = GitHubView.as_view()(request)
@@ -79,9 +83,9 @@ class TestPostRegistered(TestPost):
         """
         GitHub webhook returns BAD REQUEST to ping payload with all events
         """
-        request = PayloadRequestFactory(
-            hook_events=['*'],
-            repository_id=123456,
+        request = PingEventFactory(
+            hook__events=['*'],
+            repository__id=123456,
         )
 
         result = GitHubView.as_view()(request)
