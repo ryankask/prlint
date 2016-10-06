@@ -1,46 +1,63 @@
 .. image:: https://circleci.com/gh/jamescooke/prlint.svg?style=shield
     :target: https://circleci.com/gh/jamescooke/prlint
 
-About
-=====
+PRLint is a linter for Pull Requests.
 
-PRLint is a linter for pull requests. Primarily it integrates with GitHub and
-works with the GitHub style of Pull Request.
+It lints each Pull Request's commits against a set of rules, blocking Pull
+Requests that contain commits that do not meet the required standards. In this
+way it helps developers by improving the quality of git history entering a
+repository.
+
+Not just ``HEAD``
+-----------------
 
 The majority of testing services test the ``HEAD`` commit of a Pull Request.
 This is fine when a team only care about the final patch about to be applied or
-where every successful pull request is squashed to a single commit. However,
+where every successful Pull Request is squashed to a single commit. However,
 some teams maintain git history and there are some conditions where the team
-may care about each commit in a pull request.
+may care about each commit in a Pull Request.
 
 Fixup commits
 -------------
 
-Take, for example, ``--fixup`` commits. In `Pull Request #1 </pull/1>`_ there
-is a fixup commit waiting to be squashed - it's highlighted here in red:
+Take, for example, ``--fixup`` commits. In `Pull Request #1
+<https://github.com/jamescooke/prlint/pull/1>`_ there is a fixup commit waiting
+to be squashed - it's highlighted here in red:
 
 .. image:: assets/fixup_commit.png
 
-Although the diff of the pull request is valid, we want to block the merge of
-the pull request until the fixup commit is autosquashed.
+Although the diff of the Pull Request is valid, we want to block the merge of
+the Pull Request until the fixup commit is autosquashed. Otherwise the fixup
+commit will enter our master branch and pollute the history.
 
-PRLint tests every commit in a pull request and fails if any commit doesn't
+PRLint tests every commit in a Pull Request and fails if any commit doesn't
 pass the rules set for the repository.
 
-    PRLint was originally called "nofixup" because it was built to catch fixup
-    commits and fail the pull request if any where in the commits of the PR.
-    You can read more about `fixup commits and autosquashing in this thoughtbot
-    article <https://robots.thoughtbot.com/autosquashing-git-commits>`_.
+    TODO: Add failing status image and resolution.
+
+Further info
+------------
+
+PRLint was originally called "nofixup" because it was built to catch fixup
+commits and set the ``HEAD`` commit of the Pull Request to failing if any were
+found.
+
+You can read more about `fixup commits and autosquashing in this thoughtbot
+article <https://robots.thoughtbot.com/autosquashing-git-commits>`_.
 
 Values
 ------
 
-* Open and accessible always: The project is open-source, you can take it and
-  run your own instance.
+* Open and accessible always: The `project is open-source </LICENSE>`_, you can
+  take it and run your own instance.
 
 * Generic and flexible: Although PRLint is written in Python, it can be used
   with any repository written in any languages. It aims to support as many
   workflows as possible.
+
+* Multiple integrations: Primarily PRLint integrates with GitHub and works with
+  the GitHub style of Pull Request. PRLint will integrate with as many services
+  as possible.
 
 
 Install
