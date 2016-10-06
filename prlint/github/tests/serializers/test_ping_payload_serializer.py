@@ -21,7 +21,7 @@ class TestPingPayloadSerializer(TestCase):
         """
         PingPayloadSerializer is invalid with all '*' events
         """
-        data = PingPayloadFactory(hook_events=['*'])
+        data = PingPayloadFactory(hook__events=['*'])
         serializer = PingPayloadSerializer(data=data)
 
         result = serializer.is_valid()
