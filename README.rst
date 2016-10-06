@@ -1,9 +1,10 @@
+A linter for Pull Requests
+==========================
+
 .. image:: https://circleci.com/gh/jamescooke/prlint.svg?style=shield
     :target: https://circleci.com/gh/jamescooke/prlint
 
-PRLint is a linter for Pull Requests.
-
-It lints each Pull Request's commits against a set of rules, blocking Pull
+PRLint lints each Pull Request's commits against a set of rules, failing Pull
 Requests that contain commits that do not meet the required standards. In this
 way it helps developers by improving the quality of git history entering a
 repository.
@@ -11,11 +12,11 @@ repository.
 Not just ``HEAD``
 -----------------
 
-The majority of testing services test the ``HEAD`` commit of a Pull Request.
-This is fine when a team only care about the final patch about to be applied or
-where every successful Pull Request is squashed to a single commit. However,
-some teams maintain git history and there are some conditions where the team
-may care about each commit in a Pull Request.
+The majority of testing services test just the ``HEAD`` commit of a Pull
+Request. This is fine when a team only care about the final patch about to be
+applied or where every successful Pull Request is squashed to a single commit.
+However, some teams maintain git history and there are some conditions where
+the team may care about each commit in a Pull Request.
 
 Fixup commits
 -------------
