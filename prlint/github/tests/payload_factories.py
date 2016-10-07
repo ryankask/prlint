@@ -145,8 +145,27 @@ class PingPayloadFactory(Factory):
 
 
 class PullRequestPayloadFactory(Factory):
+    """
+    Payload representation of the state of a pull request.
+
+    https://developer.github.com/v3/pulls/#get-a-single-pull-request
+
+    Args:
+        id (int, optional): GitHub's internal ID for this PR.
+        number (int, optional): GitHub's friendly number for the PR.
+        state (str, optional): Either 'open' or 'closed'.
+        commits_url (str, optional): URL on the GitHub API to collect the
+            commits in this PR.
+        commits (int, optional): Number of commits in this PR.
+    """
     class Meta:
         model = dict
+
+    id = FuzzyInteger(low=1000, high=999999999)
+    number = FuzzyInteger(low=1, high=1000)
+    state = FuzzyChoice(('open', 'closed'))
+    commits_url = 'http://TODO'
+    commits = FuzzyInteger(low=1, high=20)
 
 
 class PullRequestEventPayloadFactory(Factory):
@@ -166,8 +185,9 @@ class PullRequestEventPayloadFactory(Factory):
             to cause the webhook to drop payload. The interestings ones are
             'opened', 'edited' and 'reopened' which will cause PRLint to check
             the pr.
-        number (int, optional): GitHub's internal ID for the PR.
+        number (int, optional): GitHub's friendly number for the PR.
         pull_request (dict, optional): Pull Request's current status.
+        repository (dict, optional): Repository status.
     """
     class Meta:
         model = dict
@@ -182,5 +202,6 @@ class PullRequestEventPayloadFactory(Factory):
         'closed',
         'reopened',     # queue check
     ))
-    number = FuzzyInteger(low=1000, high=999999999)
+    number = FuzzyInteger(low=1, high=1000)
     pull_request = SubFactory(PullRequestPayloadFactory)
+    repository = SubFactory(RepositoryPayloadFactory)
