@@ -1,15 +1,6 @@
-import random
-
 from django.core.urlresolvers import reverse
-from factory import (
-    Factory,
-    LazyAttribute,
-    LazyFunction,
-    SelfAttribute,
-    SubFactory,
-    lazy_attribute,
-)
-from factory.fuzzy import FuzzyInteger
+from factory import Factory, LazyFunction, SubFactory
+from factory.fuzzy import FuzzyChoice, FuzzyInteger
 from faker.factory import Factory as FakerFactory
 from rest_framework.test import APIRequestFactory
 
@@ -18,7 +9,7 @@ faker = FakerFactory.create('en_GB')
 
 def PingEventFactory(**kwargs):
     """
-    Build a ping request which is used by GitHub to ping webhooks. Event header
+    Build a ping Request which is used by GitHub to ping webhooks. Event header
     is 'ping' and payload is built with the PingPayloadFactory.
 
     After generating the payload, hook ID is "synced" between the ``hook_id``
@@ -31,6 +22,15 @@ def PingEventFactory(**kwargs):
     data['hook']['id'] = data['hook_id']
 
     return PayloadRequestFactory(event='ping', data=data)
+
+
+def PullRequestEventFactory(**kwargs):
+    """
+    Build a pull request Request generated when a Pull Request is created or
+    updated.
+    """
+    data = PullRequestEventPayloadFactory()
+    return PayloadRequestFactory(event='pull_request', data=data)
 
 
 def PayloadRequestFactory(data, event, url=None):
@@ -142,3 +142,45 @@ class PingPayloadFactory(Factory):
 
     hook_id = FuzzyInteger(low=1000, high=999999)
     zen = LazyFunction(lambda: ' '.join(faker.words(nb=5)))
+
+
+class PullRequestPayloadFactory(Factory):
+    class Meta:
+        model = dict
+
+
+class PullRequestEventPayloadFactory(Factory):
+    """
+    Generates pull request change event payload data. This is factory includes
+    the "Event" name because this payload is generated when something happens
+    to a PR - it in turn contains a pull request payload which contains all the
+    latest data of the pull request.
+
+    In addition to the fields in the github documentation, there are 'sender'
+    and 'repository' objects included in the pull request event payload.
+
+    https://developer.github.com/v3/activity/events/types/#pullrequestevent
+
+    Args:
+        action (str, optional): Action that just occurred to the Pull Request
+            to cause the webhook to drop payload. The interestings ones are
+            'opened', 'edited' and 'reopened' which will cause PRLint to check
+            the pr.
+        number (int, optional): GitHub's internal ID for the PR.
+        pull_request (dict, optional): Pull Request's current status.
+    """
+    class Meta:
+        model = dict
+
+    action = FuzzyChoice((
+        'assigned',
+        'unassigned',
+        'labeled',
+        'unlabeled',
+        'opened',       # queue check
+        'edited',       # queue check
+        'closed',
+        'reopened',     # queue check
+    ))
+    number = FuzzyInteger(low=1000, high=999999999)
+    pull_request = SubFactory(PullRequestPayloadFactory)
