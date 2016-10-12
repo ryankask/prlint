@@ -1,29 +1,29 @@
-A linter for Pull Requests
-==========================
+PRLint: A linter for Pull Requests
+==================================
 
 .. image:: https://circleci.com/gh/jamescooke/prlint.svg?style=shield
     :target: https://circleci.com/gh/jamescooke/prlint
 
-PRLint lints each Pull Request's commits against a set of rules, failing Pull
-Requests that contain commits that do not meet the required standards. In this
-way it helps developers by improving the quality of git history entering a
-repository.
+PRLint helps improve the quality of git commits entering a repository's
+history. It lints each Pull Request's commits against a set of rules, failing
+Pull Requests that contain commits that do not meet the required standards.
 
 Not just ``HEAD``
 -----------------
 
-The majority of testing services test just the ``HEAD`` commit of a Pull
-Request. This is fine when a team only care about the final patch about to be
-applied or where every successful Pull Request is squashed to a single commit.
-However, some teams maintain git history and there are some conditions where
-the team may care about each commit in a Pull Request.
+The majority of testing services test only the ``HEAD`` commit of a Pull
+Request. This is good enough when a team only cares about the final patch about
+to be applied, or in situations where the commits in every successful Pull
+Request are squashed into a single commit. However, some teams maintain git
+history and there are some conditions where the team may care about every
+commit in a Pull Request.
 
 Fixup commits
 -------------
 
-Take, for example, ``--fixup`` commits. In `Pull Request #1
-<https://github.com/jamescooke/prlint/pull/1>`_ there is a fixup commit waiting
-to be squashed - it's highlighted here in red:
+Take, for example, ``fixup!`` commits created with ``git commit --fixup=``. In
+`Pull Request #1 <https://github.com/jamescooke/prlint/pull/1>`_ there is a
+``!fixup`` commit waiting to be squashed - it's highlighted here in red:
 
 .. image:: assets/fixup_commit.png
 
@@ -35,6 +35,11 @@ PRLint tests every commit in a Pull Request and fails if any commit doesn't
 pass the rules set for the repository.
 
     TODO: Add failing status image and resolution.
+
+Summary of default rules
+------------------------
+
+TODO: will happen :smile:
 
 Further info
 ------------
@@ -64,7 +69,13 @@ Values
 Install
 =======
 
-Clone this repository.
+You will need ``python3``, ``virtualenv`` and ``pip`` installed to be able to
+use this project in its current state. You'll also need GNU ``make`` or similar
+to be able to follow these install and testing instructions.
+
+Clone this repository::
+
+    git clone git@github.com:jamescooke/prlint.git
 
 Create a virtualenv containing Python3::
 
@@ -78,7 +89,7 @@ Activate and install requirements::
 Testing
 =======
 
-While in virtualenv, add the testing requirements::
+With the virtual environment active, add the testing requirements::
 
     make install-test
 
