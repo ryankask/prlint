@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from factory import Factory, LazyFunction, SubFactory
+from factory import Factory, LazyFunction, SelfAttribute, SubFactory
 from factory.fuzzy import FuzzyChoice, FuzzyInteger
 from faker.factory import Factory as FakerFactory
 from rest_framework.test import APIRequestFactory
@@ -185,7 +185,9 @@ class PullRequestEventPayloadFactory(Factory):
             to cause the webhook to drop payload. The interestings ones are
             'opened', 'edited' and 'reopened' which will cause PRLint to check
             the pr.
-        number (int, optional): GitHub's friendly number for the PR.
+        number (int, optional): GitHub's friendly number for the PR. Also
+            passed dow to the child ``pull_request`` data so that both numbers
+            match.
         pull_request (dict, optional): Pull Request's current status.
         repository (dict, optional): Repository status.
     """
@@ -203,5 +205,8 @@ class PullRequestEventPayloadFactory(Factory):
         'reopened',     # queue check
     ))
     number = FuzzyInteger(low=1, high=1000)
-    pull_request = SubFactory(PullRequestPayloadFactory)
+    pull_request = SubFactory(
+        PullRequestPayloadFactory,
+        number=SelfAttribute('..number'),
+    )
     repository = SubFactory(RepositoryPayloadFactory)

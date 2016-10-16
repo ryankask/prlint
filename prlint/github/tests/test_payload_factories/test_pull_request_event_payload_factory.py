@@ -14,3 +14,4 @@ class TestPullRequestEventPayloadFactory(unittest.TestCase):
         expected_keys = ('action', 'number', 'pull_request', 'repository')
         for key in expected_keys:
             self.assertIn(key, result)
+        self.assertEqual(result['number'], result['pull_request']['number'])

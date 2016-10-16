@@ -8,8 +8,6 @@ class TestPullRequestPayloadFactory(unittest.TestCase):
     def test_default(self):
         """
         PullRequestPayloadFactory generates expected data by default
-
-        TODO check that number and pull_request.number match
         """
         result = PullRequestPayloadFactory()
 
