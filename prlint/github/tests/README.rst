@@ -20,28 +20,35 @@ different parts of the payloads. The calling tree is as follows:
 Ping
 ....
 
-* ``PingEventFactory``
+``PingEventFactory``
 
-  Builds the data with:
+* Builds the data with ``PingPayloadFactory``, which calls two sub-factories:
 
-  - ``PingPayloadFactory`` calls two sub-factories:
+  - ``repository`` = ``RepositoryPayloadFactory``
 
-    * ``RepositoryPayloadFactory``
+  - ``hook`` = ``HookPayloadFactory``
 
-    * ``HookPayloadFactory``
+    * ``config`` = ``HookConfigPayloadFactory``
 
-  Stuffs the data in the request envelope with:
-
-  - ``PayloadRequestFactory(header__event='ping', ...)``
+* Stuffs the data in the request envelope with ``PayloadRequestFactory(event='ping', ...)``
 
 Pull Request
 ............
 
-* ``PullRequestEventFactory``
+``PullRequestEventFactory``
 
-  - ``PayloadRequestFactory(header__event='pull_request', ...)``
+* Builds the data with ``PullRequestEventPayloadFactory``, which calls
+  sub-factories:
 
-    * TODO
+  - ``pull_request`` = ``PullRequestPayloadFactory``
+
+  - ``repository`` = ``RepositoryPayloadFactory``
+
+  - ``sender`` = Not generated.
+
+* Stuffs the data in the request envelope with
+  ``PayloadRequestFactory(event='pull_request', ...)``
+
 
 Data
 ----
@@ -56,6 +63,6 @@ Some examples:
 - Pass a hook configuration which contains a limited number of events and
   then issue a non-ping event that is not in that list. For example::
 
-      PayloadRequestFactory(header__event='pull_request', hook_events=['commit'])
+      PayloadRequestFactory(event='pull_request', hook_events=['commit'])
 
 - Pass a ``repository_id`` that is negative or stringy.
