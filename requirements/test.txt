@@ -10,7 +10,7 @@ django-nose==1.4.4
 django==1.10.2
 djangorestframework==3.4.7
 factory-boy==2.7.0        # via factory-djoy
-factory-djoy==0.4
+factory-djoy==0.5.0
 fake-factory==0.7.2       # via factory-boy
 first==2.0.1              # via pip-tools
 flake8==3.0.4
