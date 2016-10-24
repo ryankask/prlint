@@ -2,7 +2,10 @@ from hypothesis.extra.django import TestCase
 
 from ...factories import RepositoryFactory
 from ...serializers import RepositoryPayloadSerializer, RepositorySerializer
-from ..payload_factories import PingPayloadFactory
+from ..payload_factories import (
+    PingPayloadFactory,
+    PullRequestEventPayloadFactory,
+)
 
 
 class TestRepositoryPayloadSerializer(TestCase):
@@ -62,6 +65,18 @@ class TestRepositoryPayloadSerializer(TestCase):
         """
         repo = RepositoryFactory()
         data = PingPayloadFactory(repository__id=repo.remote_id)
+        serializer = RepositoryPayloadSerializer(data=data)
+
+        result = serializer.is_valid()
+
+        self.assertTrue(result, serializer.errors)
+
+    def test_pull_request_factory_serializable(self):
+        """
+        RepositoryPayloadSerializer valid with PullRequestEventPayloadFactory
+        """
+        repo = RepositoryFactory()
+        data = PullRequestEventPayloadFactory(repository__id=repo.remote_id)
         serializer = RepositoryPayloadSerializer(data=data)
 
         result = serializer.is_valid()
