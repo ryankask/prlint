@@ -28,8 +28,12 @@ def PullRequestEventFactory(**kwargs):
     """
     Build a pull request Request generated when a Pull Request is created or
     updated.
+
+    Args:
+        **kwargs: Keyword arguments are passed through to generate payload data
+            with PullRequestEventPayloadFactory.
     """
-    data = PullRequestEventPayloadFactory()
+    data = PullRequestEventPayloadFactory(**kwargs)
     return PayloadRequestFactory(event='pull_request', data=data)
 
 

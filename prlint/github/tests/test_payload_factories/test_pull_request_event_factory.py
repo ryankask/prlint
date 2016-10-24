@@ -24,3 +24,13 @@ class TestPullRequestEventFactory(unittest.TestCase):
 
         self.assertEqual(result.data['header_github_event'], 'pull_request')
         self.assertIn('action', result.data['request_data'])
+
+    def test_set_repo_id(self):
+        """
+        PullRequestEventFactory passes through repository's remote ID
+        """
+        request = PullRequestEventFactory(repository__id='__REMOTE_ID__')
+
+        result = view(request)
+
+        self.assertEqual(result.data['request_data']['repository']['id'], '__REMOTE_ID__')
