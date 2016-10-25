@@ -106,7 +106,7 @@ class TestPostRegistered(TestPost):
 
         result = GitHubView.as_view()(request)
 
-        self.assertEqual(result.status_code, 400)
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(list(result.data['hook']), ['events'])
         self.assertIn('Events received were "[\'*\']"', result.data['hook']['events'][0])
 
@@ -114,7 +114,9 @@ class TestPostRegistered(TestPost):
 
     def test_pull_request(self):
         """
-        GitHub webhook returns ?
+        GitHub webhook returns 200 OK normal pull request payload
+
+        TODO pull request is added to queue to update status
         """
         request = PullRequestEventFactory(
             repository__id=123456,
@@ -122,6 +124,4 @@ class TestPostRegistered(TestPost):
 
         result = GitHubView.as_view()(request)
 
-        self.assertEqual(result.status_code, 400)
-        self.assertEqual(list(result.data['hook']), ['events'])
-        self.assertIn('Events received were "[\'*\']"', result.data['hook']['events'][0])
+        self.assertEqual(result.status_code, status.HTTP_200_OK, result.data)

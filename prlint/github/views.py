@@ -27,12 +27,15 @@ class GitHubView(APIView):
 
         * Process pull_request payloads.
         """
+
+        # Check registration
         repo_serializer = RepositoryPayloadSerializer(data=request.data)
         try:
             repo_serializer.is_valid(raise_exception=True)
         except ValidationError:
             return Response(repo_serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
+        # Check event headers
         header_serializer = HeaderSerializer(request)
         try:
             header_serializer.is_valid(raise_exception=True)
@@ -47,10 +50,13 @@ class GitHubView(APIView):
             }
             return Response(message, status=status.HTTP_403_FORBIDDEN)
 
-        ping_serializer = PingPayloadSerializer(data=request.data)
-        try:
-            ping_serializer.is_valid(raise_exception=True)
-        except ValidationError:
-            return Response(ping_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if header_serializer.event == 'ping':
+            ping_serializer = PingPayloadSerializer(data=request.data)
+            try:
+                ping_serializer.is_valid(raise_exception=True)
+            except ValidationError:
+                return Response(ping_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # TODO do some validation and work with the pull_request
 
         return Response({}, status=status.HTTP_200_OK)
