@@ -5,8 +5,12 @@
 #    pip-compile --output-file base.txt base.in
 #
 click==6.6                # via pip-tools
-django==1.10.2
-djangorestframework==3.4.7
+django==1.10.3
+djangorestframework==3.5.3
+factory-boy==2.7.0        # via factory-djoy
+factory-djoy==0.6.0
+fake-factory==0.7.2       # via factory-boy
 first==2.0.1              # via pip-tools
-pip-tools==1.7.0
-six==1.10.0               # via fake-factory, pip-tools, python-dateutil
+pip-tools==1.8.0
+python-dateutil==2.6.0    # via fake-factory
+six==1.10.0               # via factory-djoy, fake-factory, pip-tools, python-dateutil
