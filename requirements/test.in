@@ -1,11 +1,9 @@
 -r base.in
 
 # vim-sorted
-django-nose
 flake8
 hypothesis
 ipdb
-ipdbplugin
 ipython
 isort
-yanc
+pytest-django

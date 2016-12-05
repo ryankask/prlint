@@ -81,30 +81,42 @@ You will need ``python3``, ``virtualenv`` and ``pip`` installed to be able to
 use this project in its current state. You'll also need GNU ``make`` or similar
 to be able to follow these install and testing instructions.
 
-Clone this repository::
+Clone this repository:
 
-    git clone git@github.com:jamescooke/prlint.git
+.. code-block:: sh
 
-Create a virtualenv containing Python3::
+    $ git clone git@github.com:jamescooke/prlint.git
 
-    make venv
+Create a virtualenv containing Python3:
 
-Activate and install requirements::
+.. code-block:: sh
 
-    . venv/bin/activate
-    make install
+    $ make venv
+
+Activate and install requirements:
+
+.. code-block:: sh
+
+    $ . venv/bin/activate
+    $ make install
 
 Testing
 =======
 
-With the virtual environment active, add the testing requirements::
+With the virtual environment active, add the testing requirements:
 
-    make install-test
+.. code-block:: sh
 
-Run tests with Django's test runner which is configured to use Nose::
+    $ make install-test
 
-    make test
+Run tests with ``pytest``:
 
-Check linting with ``flake8``::
+.. code-block:: sh
 
-    make lint
+    $ pytest prlint
+
+Check linting with ``flake8`` and ``isort``, etc:
+
+.. code-block:: sh
+
+    $ make -C prlint/ lint
