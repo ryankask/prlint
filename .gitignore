@@ -1,6 +1,6 @@
 *.pyc
+.hypothesis
 db.sqlite3
 isort.out
 prlint/.cache
-prlint/.hypothesis
 venv
