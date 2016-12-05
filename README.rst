@@ -5,25 +5,33 @@ PRLint: A linter for Pull Requests
     :target: https://circleci.com/gh/jamescooke/prlint
 
 PRLint helps improve the quality of git commits entering a repository's
-history. It lints each Pull Request's commits against a set of rules, failing
-Pull Requests that contain commits that do not meet the required standards.
+history by flagging commits that do not meet required standards.
 
-Not just ``HEAD``
------------------
+For each Pull Request received, it lints the Pull Request's commits against a
+set of rules. Pull Requests that contain commits that do not meet the required
+standards will be set to RED and fail.
 
-The majority of testing services test only the ``HEAD`` commit of a Pull
+
+Tests the whole branch, not just git ``HEAD``
+---------------------------------------------
+
+The majority of testing services test only the final ``HEAD`` commit of a Pull
 Request. This is good enough when a team only cares about the final patch about
 to be applied, or in situations where the commits in every successful Pull
 Request are squashed into a single commit. However, some teams maintain git
 history and there are some conditions where the team may care about every
 commit in a Pull Request.
 
+PRLint checks every commit in the Pull Request, to ensure that every one meets
+the requirements of the repository.
+
+
 Fixup commits
 -------------
 
 Take, for example, ``fixup!`` commits created with ``git commit --fixup=``. In
 `Pull Request #1 <https://github.com/jamescooke/prlint/pull/1>`_ there is a
-``!fixup`` commit waiting to be squashed - it's highlighted here in red:
+``!fixup`` commit waiting to be squashed - it is highlighted here in red:
 
 .. image:: assets/fixup_commit.png
 
