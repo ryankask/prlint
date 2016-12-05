@@ -5,7 +5,7 @@
 #    pip-compile --output-file base.txt base.in
 #
 click==6.6                # via pip-tools
-django==1.10.3
+django==1.10.4
 djangorestframework==3.5.3
 factory-boy==2.7.0        # via factory-djoy
 factory-djoy==0.6.0

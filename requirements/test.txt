@@ -6,13 +6,13 @@
 #
 click==6.6                # via pip-tools
 decorator==4.0.10         # via ipython, traitlets
-django==1.10.3
+django==1.10.4
 djangorestframework==3.5.3
 factory-boy==2.7.0        # via factory-djoy
 factory-djoy==0.6.0
 fake-factory==0.7.2       # via factory-boy
 first==2.0.1              # via pip-tools
-flake8==3.2.0
+flake8==3.2.1
 hypothesis==3.6.0
 ipdb==0.10.1
 ipython-genutils==0.1.0   # via traitlets
