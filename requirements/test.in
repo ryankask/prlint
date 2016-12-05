@@ -4,7 +4,6 @@
 flake8
 hypothesis
 ipdb
-ipdbplugin
 ipython
 isort
 pytest-django
