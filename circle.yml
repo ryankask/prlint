@@ -8,6 +8,6 @@ dependencies:
 
 test:
   override:
-    - make -C prlint/ test
+    - pytest prlint
   post:
     - make -C prlint/ lint
